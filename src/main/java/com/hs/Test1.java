@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAccumulator;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
@@ -18,6 +17,10 @@ import java.util.stream.IntStream;
  * @Date 2021/04/20/21:03
  * @Description
  */
+
+/***
+ * 二分查找
+ */
 public class Test1 {
     public static void main(String[] args) {
         int[] a = new int[]{1,2,4,8,9,35,67};
@@ -28,7 +31,7 @@ public class Test1 {
         int left = 0;
         int right = a.length-1;
         while (right>=left){
-            int medin = (int)(right + left)/2;
+            int medin = (right + left)/2;
             if (a[medin] < key){
                 left = medin + 1;
             }else if (a[medin] > key) {
@@ -41,6 +44,9 @@ public class Test1 {
     }
 }
 
+/***
+ * 递归二分查找
+ */
  class DIgui {
     public static void main(String[] args) {
         int a[] = new int[]{1,3,4,5,6,7,35,37,66};
@@ -67,7 +73,9 @@ public class Test1 {
         }
     }
 
-
+/***
+ * 最大公约数
+ */
 class Test2 {
     public static void main(String[] args) {
         System.out.println(commonDivisor(9,6));
@@ -137,6 +145,9 @@ class Test4 {
     }
 }
 
+/***
+ * 判断是否回环数组
+ */
 class Test5{
     public static void main(String[] args) {
         System.out.print(huih("AABBCCC", "CCCAABB"));
@@ -173,8 +184,8 @@ class Test7{
         Scanner scanner = new Scanner(System.in);
         h1 = scanner.nextInt();
         h2 = scanner.nextInt();
-        b1 = (double)h1;
-        b2 = (double)h2;
+        b1 = h1;
+        b2 = h2;
         System.out.println("这是ball1弹起十次的高度记录");
         for (int i=1;i<=10;i++){
             ball1=b1*0.6;
@@ -378,11 +389,10 @@ class Test15{
 class Test16{
     public static void main(String[] args) {
         //使用AtomicLong
-        demo(
-                () -> new AtomicLong(0),
-                (adder) -> adder.getAndIncrement()
-        );
-
+//        demo(
+//                () -> new AtomicLong(0),
+//                (adder) -> adder.getAndIncrement()
+//        );
         //使用累加器 LongAdder
         demo(
                 () -> new LongAdder(),
@@ -412,7 +422,6 @@ class Test16{
         System.out.println(adder + "  执行时间:" + (end -start)/1000_000+"秒");
     }
 }
-
 /***
  * 累加器
  */
@@ -423,14 +432,13 @@ class Test17{
             System.out.println(x+"x"+x+"*"+y+"="+s);
             return s;
         },1);
-        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        ExecutorService executorService = Executors.newFixedThreadPool(12);
         IntStream.range(1,10).forEach(i->executorService.submit(() -> accumulator.accumulate(i)));
         executorService.shutdown();
         Thread.sleep(20000);
         System.out.println(accumulator.getThenReset());
     }
 }
-
 
 
 
