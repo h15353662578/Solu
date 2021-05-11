@@ -10,9 +10,10 @@ public class TestLineTable {
         SequenceImpl sequence = new SequenceImpl(17);
         sequence.add(90);
         sequence.add(66);
-        sequence.add(33);
+        sequence.add("Russian");
         sequence.add(80);
         sequence.add(70);
+        sequence.add("俄罗斯");
         sequence.add(60);
         sequence.add(null);
         System.out.println("查询数据下标2:"+sequence.get(2));

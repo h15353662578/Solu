@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class SequenceImpl implements Sequence{
 
     //存放元素的对象数组
-    private Object[] oldGroup;
+    private Object[] Group;
 
     //默认长度为10
     private static final int DEFAULT_CAPACITY = 10;
@@ -23,11 +23,11 @@ public class SequenceImpl implements Sequence{
 
     public SequenceImpl(){
         //初始化存储元素数组 初始化为10
-        this.oldGroup = new Object[DEFAULT_CAPACITY];
+        this.Group = new Object[DEFAULT_CAPACITY];
     }
     public SequenceImpl(int capacity){
         if (capacity > 0){
-            this.oldGroup = new Object[capacity];
+            this.Group = new Object[capacity];
         }
     }
 
@@ -36,7 +36,7 @@ public class SequenceImpl implements Sequence{
         //判断添加元素是否越界
         //若越界先进行扩容 后再添加数据
         ensureCapacityInter(size+1);
-        oldGroup[size++] = group;
+        Group[size++] = group;
     }
 
     @Override
@@ -44,16 +44,16 @@ public class SequenceImpl implements Sequence{
         rangeCheck(index);
         int moveSteps = size-index-1;
         if(moveSteps > 0){
-            System.arraycopy(oldGroup,index-1,oldGroup,index,moveSteps);
+            System.arraycopy(Group,index-1,Group,index,moveSteps);
         }
-        oldGroup[--size]=null;
+        Group[--size]=null;
         return true;
     }
 
     @Override
     public Object get(int index) {
         rangeCheck(index);
-        return oldGroup[index];
+        return Group[index];
     }
 
     @Override
@@ -61,12 +61,12 @@ public class SequenceImpl implements Sequence{
         //判断是否有指定内容null
         if (group == null){
             for (int i = 0;i < size;i ++)
-            if (oldGroup[i]==null){
+            if (Group[i]==null){
                 return true;
             }
         }else {
             for (int i=0;i<size;i++){
-                if (group.equals(oldGroup[i])){
+                if (group.equals(Group[i])){
                     //采用equals判断一定要将指定内容放在前面防止空指针异常
                     return true;
                 }
@@ -78,8 +78,8 @@ public class SequenceImpl implements Sequence{
     @Override
     public Object set(int index, Object newGroup) {
         rangeCheck(index);
-        Object oldData = oldGroup[index];
-        oldGroup[index] = newGroup;
+        Object oldData = Group[index];
+        Group[index] = newGroup;
         return oldData;
     }
 
@@ -91,24 +91,26 @@ public class SequenceImpl implements Sequence{
     @Override
     public void clear() {
         for (int i = 0;i < size;i ++){
-            oldGroup[i] = null;
+            Group[i] = null;
         }
         this.size = 0;
     }
 
     @Override
     public Object[] toArray() {
-        return this.oldGroup;
+        return this.Group;
     }
     private void ensureCapacityInter(int cap) throws Exception {
         //overflow
-        if (cap-oldGroup.length>0){
+        if (cap-Group.length>0){
             //扩容
             grow(cap);
         }
     }
+
     private void grow(int cap) throws Exception {
-        int oldCap = oldGroup.length;
+        int oldCap = Group.length;
+        //左移一位原数据长度x2
         int newCap = oldCap << 1;
         if (cap-newCap>0){
             newCap = cap;
@@ -116,15 +118,16 @@ public class SequenceImpl implements Sequence{
         if (newCap-MAX_CAPACITY > 0){
             throw new Exception("线性表超出最大值");
         }
-        oldGroup = Arrays.copyOf(oldGroup,newCap);
+        Group = Arrays.copyOf(Group,newCap);
     }
 
     private void rangeCheck(int index){
         if (index < 0 || index >= size) {
-//            try {
-//            return "索引非法";
+            try {
              throw new ArrayIndexOutOfBoundsException("索引非法");
-//            }catch ();
+            } catch (ArrayIndexOutOfBoundsException exception){
+                exception.printStackTrace();
+            }
         }
     }
 }
